@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://d8rrke4i54l5"]
+
+[ext_resource type="Script" path="res://basic_projectile.gd" id="1_pap8c"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_8mu8d"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rerkb"]
+albedo_color = Color(1, 0.101961, 1, 1)
+
+[node name="BasicProjectile" type="Node3D"]
+top_level = true
+script = ExtResource("1_pap8c")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
+mesh = SubResource("SphereMesh_8mu8d")
+surface_material_override/0 = SubResource("StandardMaterial3D_rerkb")

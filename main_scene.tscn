@@ -1,0 +1,68 @@
+[gd_scene load_steps=9 format=3 uid="uid://brpj02hmwp2wm"]
+
+[ext_resource type="Script" path="res://Basic.gd" id="1_77xeu"]
+[ext_resource type="Script" path="res://BulletTrails.gd" id="2_pyre4"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_1xtf4"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_cfw8o"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ilik6"]
+albedo_color = Color(0.533333, 0.027451, 0.109804, 1)
+
+[sub_resource type="Environment" id="Environment_esdqk"]
+ambient_light_source = 3
+ambient_light_color = Color(0.764706, 0.815686, 0.505882, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_87aa7"]
+size = Vector2(500, 500)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c7jhl"]
+albedo_color = Color(0.0313726, 0.313726, 0.215686, 1)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.85082, 0.952781, -3.29529)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D"]
+mesh = SubResource("CapsuleMesh_1xtf4")
+
+[node name="SpawnPoint" type="MeshInstance3D" parent="Node3D/MeshInstance3D"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.538827, 0, 0)
+mesh = SubResource("SphereMesh_cfw8o")
+surface_material_override/0 = SubResource("StandardMaterial3D_ilik6")
+
+[node name="Basic" type="Node" parent="Node3D/MeshInstance3D/SpawnPoint" node_paths=PackedStringArray("spawn_point", "target_point")]
+script = ExtResource("1_77xeu")
+spawn_point = NodePath("..")
+target_point = NodePath("../../TargetPoint")
+
+[node name="BulletTrails" type="Node" parent="Node3D/MeshInstance3D/SpawnPoint" node_paths=PackedStringArray("spawn_point", "target_point")]
+script = ExtResource("2_pyre4")
+spawn_point = NodePath("..")
+target_point = NodePath("../../TargetPoint")
+
+[node name="Timer" type="Timer" parent="Node3D/MeshInstance3D/SpawnPoint"]
+wait_time = 0.71
+autostart = true
+
+[node name="TargetPoint" type="MeshInstance3D" parent="Node3D/MeshInstance3D"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.538827, 1.54158, -4.47231)
+mesh = SubResource("SphereMesh_cfw8o")
+surface_material_override/0 = SubResource("StandardMaterial3D_ilik6")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.948024, 0.318198, 0, -0.318198, 0.948024, -1.85361, 2.82776, 0.964628)
+fov = 51.033
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_esdqk")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.17423, 0, 0)
+mesh = SubResource("PlaneMesh_87aa7")
+surface_material_override/0 = SubResource("StandardMaterial3D_c7jhl")
+
+[connection signal="timeout" from="Node3D/MeshInstance3D/SpawnPoint/Timer" to="Node3D/MeshInstance3D/SpawnPoint/Basic" method="_on_timer_timeout"]
+[connection signal="timeout" from="Node3D/MeshInstance3D/SpawnPoint/Timer" to="Node3D/MeshInstance3D/SpawnPoint/BulletTrails" method="_on_timer_timeout"]
