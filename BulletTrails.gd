@@ -8,5 +8,5 @@ extends Node
 func _on_timer_timeout():
 	var new_trail = trail_scene.instantiate()
 	new_trail.target_point = target_point.global_position
+	new_trail.spawn_point = spawn_point.global_transform.origin
 	add_child(new_trail)
-	new_trail.global_transform.origin = spawn_point.global_transform.origin
